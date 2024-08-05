@@ -3,8 +3,8 @@ from main.user.requests_user import RequestsCreateUser
 from conftest import new_user_login
 
 
-class TestUpdateUserPositive:
-    def test_update_email(self, new_user_login):
+class TestUpdateUserNegative:
+    def test_update_email_negative(self, new_user_login):
         users_data = RequestsCreateUser.get_user(new_user_login.json()['accessToken'])
 
         new_email = HelpersCreateUser.generate_random_string(6) + '@test.ts'
@@ -12,11 +12,11 @@ class TestUpdateUserPositive:
             'email': new_email,
             'name': users_data.json()['user']['name']
         }
-        response = RequestsCreateUser.update_user(new_user_login.json()['accessToken'], body)
+        response = RequestsCreateUser.update_user_without_token(body)
 
-        assert response.status_code == 200 and response.json()['user']['email'] == new_email
+        assert response.status_code == 401 and response.json()['message'] == 'You should be authorised'
 
-    def test_update_name(self, new_user_login):
+    def test_update_name_negative(self, new_user_login):
         users_data = RequestsCreateUser.get_user(new_user_login.json()['accessToken'])
 
         new_name = HelpersCreateUser.generate_random_string(10)
@@ -24,6 +24,6 @@ class TestUpdateUserPositive:
             'email': users_data.json()['user']['email'],
             'name': new_name
         }
-        response = RequestsCreateUser.update_user(new_user_login.json()['accessToken'], body)
+        response = RequestsCreateUser.update_user_without_token(body)
 
-        assert response.status_code == 200 and response.json()['user']['name'] == new_name
+        assert response.status_code == 401 and response.json()['message'] == 'You should be authorised'

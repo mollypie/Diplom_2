@@ -17,6 +17,24 @@ class RequestsCreateUser:
 
         return response
 
+    @staticmethod
+    def update_user(access_token, payload):
+        response = requests.patch(BASE_URL + AUTH_USER_PATH, headers={'Authorization': access_token}, data=payload)
+
+        return response
+
+    @staticmethod
+    def update_user_without_token(payload):
+        response = requests.patch(BASE_URL + AUTH_USER_PATH, data=payload)
+
+        return response
+
+    @staticmethod
+    def get_user(access_token):
+        response = requests.get(BASE_URL + AUTH_USER_PATH, headers={'Authorization': access_token})
+
+        return response
+
     # @staticmethod
     # def create_user_and_get_credential():
     #     payload = HelpersCreateUser.generate_credentials(email=True, password=True, name=True)
@@ -30,4 +48,4 @@ class RequestsCreateUser:
 
     @staticmethod
     def delete_user(payload):
-        response = requests.delete(BASE_URL + DELETE_USER_PATH, )
+        response = requests.delete(BASE_URL + AUTH_USER_PATH, )
