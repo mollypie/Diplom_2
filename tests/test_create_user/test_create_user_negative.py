@@ -1,6 +1,7 @@
 import allure
 import pytest
 
+from data import *
 from main.user.helpers_user import HelpersUser
 from main.user.requests_user import RequestsUser
 
@@ -12,7 +13,7 @@ class TestCreateUserNegative:
         user_1 = RequestsUser.create_user(credentials)
         user_2 = RequestsUser.create_user(credentials)
 
-        assert user_2.status_code == 403 and user_2.json()['message'] == 'User already exists'
+        assert user_2.status_code == 403 and user_2.json()['message'] == TEXT_USER_ALREADY_EXISTS
 
         # delete user_1
 
@@ -28,4 +29,4 @@ class TestCreateUserNegative:
     def test_create_user_without_required_fields(self, credentials):
         response = RequestsUser.create_user(credentials)
 
-        assert response.status_code == 403 and response.json()['message'] == 'Email, password and name are required fields'
+        assert response.status_code == 403 and response.json()['message'] == TEXT_REQUIRED_FIELDS_IS_EMPTY

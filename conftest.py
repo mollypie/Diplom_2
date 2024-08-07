@@ -14,10 +14,7 @@ def new_user_create():
         'password': credentials['password']
     }
 
-    credentials_for_login = {
-        'email': credentials['email'],
-        'password': credentials['password']
-    }
+    credentials_for_login = HelpersUser.credentials_for_login(credentials)
 
     new_user = RequestsUser.login_user(credentials_for_login)
 
@@ -29,10 +26,8 @@ def new_user_login():
     credentials = HelpersUser.generate_credentials(email=True, password=True, name=True)
     RequestsUser.create_user(credentials)
 
-    credentials_for_login = {
-        'email': credentials['email'],
-        'password': credentials['password']
-    }
+    credentials_for_login = HelpersUser.credentials_for_login(credentials)
+
     new_user = RequestsUser.login_user(credentials_for_login)
 
     yield new_user

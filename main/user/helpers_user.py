@@ -49,3 +49,18 @@ class HelpersUser:
         }
 
         return body_with_new_name
+
+    @staticmethod
+    def credentials_for_login(credentials):
+        credentials_for_login = {
+            'email': credentials['email'],
+            'password': credentials['password']
+        }
+
+        return credentials_for_login
+
+    @staticmethod
+    def get_token(user):
+        token = user.json()['accessToken']
+
+        return token
