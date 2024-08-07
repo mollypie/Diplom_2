@@ -1,16 +1,16 @@
 import allure
 import pytest
 
-from main.user.helpers_user import HelpersCreateUser
-from main.user.requests_user import RequestsCreateUser
+from main.user.helpers_user import HelpersUser
+from main.user.requests_user import RequestsUser
 
 
 class TestCreateUserNegative:
-    @allure.title('Создание двух одинаковых пользователей')
+    @allure.title('Создание пользователя, который уже зарегистрирован')
     def test_create_exist_user(self):
-        credentials = HelpersCreateUser.generate_credentials(email=True, password=True, name=True)
-        user_1 = RequestsCreateUser.create_user(credentials)
-        user_2 = RequestsCreateUser.create_user(credentials)
+        credentials = HelpersUser.generate_credentials(email=True, password=True, name=True)
+        user_1 = RequestsUser.create_user(credentials)
+        user_2 = RequestsUser.create_user(credentials)
 
         assert user_2.status_code == 403 and user_2.json()['message'] == 'User already exists'
 
@@ -20,12 +20,12 @@ class TestCreateUserNegative:
     @pytest.mark.parametrize(
         'credentials',
         [
-            [HelpersCreateUser.generate_credentials(email=False, password=True, name=True)],
-            [HelpersCreateUser.generate_credentials(email=True, password=False, name=True)],
-            [HelpersCreateUser.generate_credentials(email=True, password=True, name=False)]
+            [HelpersUser.generate_credentials(email=False, password=True, name=True)],
+            [HelpersUser.generate_credentials(email=True, password=False, name=True)],
+            [HelpersUser.generate_credentials(email=True, password=True, name=False)]
         ]
     )
     def test_create_user_without_required_fields(self, credentials):
-        response = RequestsCreateUser.create_user(credentials)
+        response = RequestsUser.create_user(credentials)
 
         assert response.status_code == 403 and response.json()['message'] == 'Email, password and name are required fields'
